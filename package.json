@@ -1,0 +1,25 @@
+{
+  "name": "vgd-types",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "build": "tsc",
+    "start": "node dist/src/index.js",
+    "dev": "ts-node-dev --respawn --transpile-only src/index.ts"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "node-ts": "^6.1.3"
+  },
+  "devDependencies": {
+    "@types/deep-diff": "^1.0.5",
+    "deep-diff": "^1.0.2",
+    "fs": "^0.0.1-security",
+    "path": "^0.12.7",
+    "ts-node-dev": "^2.0.0",
+    "typescript": "^5.8.3"
+  }
+}
