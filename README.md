@@ -21,3 +21,6 @@ async function main(): void {
 
 main();
 ```
+
+### TODO
+- More documentation for IntelliSense
