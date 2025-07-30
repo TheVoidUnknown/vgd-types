@@ -1,11 +1,11 @@
 import { 
   ColorIndex,
   CustomShapeData,
-  ShapeType, 
-  ShapeMap, 
+  ShapeName,
   Uuid, 
   GradientSettings, 
-  Vector2d 
+  Vector2d, 
+  getShapeName
 } from "../common"
 
 export interface ParallaxObject {
@@ -14,7 +14,7 @@ export interface ParallaxObject {
   color: ColorIndex;
 
   shapeData: {
-    shape: ShapeType;
+    shape: ShapeName;
     shapeType: number;
     shapeOffset: number;
 
@@ -126,7 +126,7 @@ export function deserializeParallaxObjectsSync(parallaxObjects: any): ParallaxOb
       color: parallaxObject.c,
 
       shapeData: {
-        shape: ShapeMap[parallaxObject.s.s || 0][parallaxObject.s.so || 0],
+        shape: getShapeName(parallaxObject.s.s, parallaxObject.s.o),
         shapeType: parallaxObject.s.s,
         shapeOffset: parallaxObject.s.so,
 

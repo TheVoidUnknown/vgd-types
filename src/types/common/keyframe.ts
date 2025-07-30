@@ -3,7 +3,7 @@ export interface Keyframe {
    * Timestamp in seconds for this keyframe to trigger, relative to beatmap object if applicable.
    * @property {number} timestamp
    */
-  timestamp: number;
+  timestamp?: number;
 
   /**
    * Easing type of this keyframe.

@@ -3,13 +3,13 @@ import {
   GradientSettings,
   Keyframe,
   ObjectType,
-  ShapeMap,
-  ShapeType,
   Uuid,
   Vector2d,
   serializeKeyframes,
   deserializeKeyframes, 
-  CustomShapeData
+  CustomShapeData,
+  getShapeName,
+  ShapeName,
 } from "../common"
 
 export interface LevelObject {
@@ -23,15 +23,15 @@ export interface LevelObject {
   objectType?: ObjectType;
 
   name: string;
-  text: string;
+  text?: string;
 
   renderDepth: number;
   spawnTime: number;
   origin: Vector2d;
-  shape: ShapeType;
+  shape: ShapeName;
 
-  shapeType: number;
-  shapeOffset: number;
+  shapeType?: number;
+  shapeOffset?: number;
 
   gradientSettings?: GradientSettings;
   customShape?: CustomShapeData;
@@ -202,7 +202,7 @@ export function deserializeLevelObjectsSync(levelObjects: Array<any>): LevelObje
       renderDepth: levelObject.d,
       spawnTime: levelObject.st,
       origin: levelObject.o,
-      shape: ShapeMap[levelObject.s || 0][levelObject.so || 0],
+      shape: getShapeName(levelObject.s, levelObject.so),
 
       shapeType: levelObject.s,
       shapeOffset: levelObject.so,
