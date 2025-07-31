@@ -5,7 +5,8 @@ import {
   Uuid, 
   GradientSettings, 
   Vector2d, 
-  getShapeName
+  getShapeName,
+  getShape
 } from "../common"
 
 export interface ParallaxObject {
@@ -51,8 +52,8 @@ export function serializeParallaxObjectsSync(parallaxObjects: ParallaxObject[]) 
       c: parallaxObject.color,
 
       s: {
-        ...(parallaxObject.shapeData.shapeType !== undefined && { s: parallaxObject.shapeData.shapeType }),
-        ...(parallaxObject.shapeData.shapeOffset !== undefined && { so: parallaxObject.shapeData.shapeOffset }),
+        ...(parallaxObject.shapeData.shapeType !== undefined && { s: getShape(parallaxObject.shapeData.shape).shapeType || parallaxObject.shapeData.shapeType }),
+        ...(parallaxObject.shapeData.shapeOffset !== undefined && { so: getShape(parallaxObject.shapeData.shape).shapeOffset || parallaxObject.shapeData.shapeOffset }),
 
         ...(parallaxObject.shapeData.gradient?.gradientType !== undefined && { gt: parallaxObject.shapeData.gradient.gradientType }),
         ...(parallaxObject.shapeData.gradient?.scale !== undefined && { gs: parallaxObject.shapeData.gradient.scale }),
@@ -126,7 +127,7 @@ export function deserializeParallaxObjectsSync(parallaxObjects: any): ParallaxOb
       color: parallaxObject.c,
 
       shapeData: {
-        shape: getShapeName(parallaxObject.s.s, parallaxObject.s.o),
+        shape: getShapeName(parallaxObject.s.s || 0, parallaxObject.s.so || 0),
         shapeType: parallaxObject.s.s,
         shapeOffset: parallaxObject.s.so,
 

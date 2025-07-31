@@ -10,6 +10,7 @@ import {
   CustomShapeData,
   getShapeName,
   ShapeName,
+  getShape,
 } from "../common"
 
 export interface LevelObject {
@@ -97,8 +98,8 @@ export function serializeLevelObjectsSync(levelObjects: LevelObject[]) {
       ...(levelObject.spawnTime !== undefined && { st: levelObject.spawnTime }),
       ...(levelObject.origin !== undefined && { o: levelObject.origin }),
 
-      ...(levelObject.shapeType !== undefined && { s: levelObject.shapeType }),
-      ...(levelObject.shapeOffset !== undefined && { so: levelObject.shapeOffset }),
+      ...(levelObject.shapeType !== undefined && { s: getShape(levelObject.shape).shapeType || levelObject.shapeType }),
+      ...(levelObject.shapeOffset !== undefined && { so: getShape(levelObject.shape).shapeOffset || levelObject.shapeOffset }),
 
       ...(levelObject.gradientSettings && levelObject.gradientSettings.gradientType !== undefined && { gt: levelObject.gradientSettings.gradientType }),
       ...(levelObject.gradientSettings && levelObject.gradientSettings.rotation !== undefined && { gr: levelObject.gradientSettings.rotation }),
@@ -202,7 +203,7 @@ export function deserializeLevelObjectsSync(levelObjects: Array<any>): LevelObje
       renderDepth: levelObject.d,
       spawnTime: levelObject.st,
       origin: levelObject.o,
-      shape: getShapeName(levelObject.s, levelObject.so),
+      shape: getShapeName(levelObject.s || 0, levelObject.so || 0),
 
       shapeType: levelObject.s,
       shapeOffset: levelObject.so,
