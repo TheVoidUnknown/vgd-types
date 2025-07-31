@@ -8,7 +8,8 @@ export const ShapeMap = [
   [
     "SquareFilled",
     "SquareOutline",
-    "SquareOutlineThin"
+    "SquareOutlineThin",
+    "SquareCustom"
   ],
   [
     "CircleFilled",
@@ -19,17 +20,22 @@ export const ShapeMap = [
     "CircleQuarter",
     "CircleQuarterOutline",
     "CircleHalfQuarter",
-    "CircleHalfQuarterOutline"
+    "CircleHalfQuarterOutline",
+    "CircleCustom"
   ],
   [
     "TriangleFilled",
     "TriangleOutline",
     "TriangleRightFilled",
-    "TriangleRightOutline"
+    "TriangleRightOutline",
+    "TriangleBottom",
+    "TriangleBottomOutline",
+    "TriangleCustom"
   ],
   [
     "Arrow",
-    "ArrowHead"
+    "ArrowHead",
+    "Custom"
   ],
   [
     "Text"
@@ -40,7 +46,8 @@ export const ShapeMap = [
     "HexagonOutlineThin",
     "HexagonHalf",
     "HexagonHalfOutline",
-    "HexagonHalfOutlineThin"
+    "HexagonHalfOutlineThin",
+    "HexagonCustom"
   ]
 ] as const;
 
