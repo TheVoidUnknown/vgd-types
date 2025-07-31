@@ -61,6 +61,8 @@ export interface Theme {
 }
 
 export function serializeThemesSync(themes: Theme[]) {
+  if (themes.length < 1) { return undefined; }
+
   const object: Array<any> = [];
 
   for (const theme of themes) {
@@ -81,6 +83,8 @@ export function serializeThemesSync(themes: Theme[]) {
 }
 
 export function deserializeThemesSync(themes: Array<any>): Theme[] {
+  if (!themes) { return []; }
+
   const object: Theme[] = [];
 
   for(const theme of themes) {

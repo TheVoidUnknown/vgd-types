@@ -13,6 +13,8 @@ export interface Prefab {
 }
 
 export function serializePrefabsSync(prefabs: Prefab[]) {
+  if (prefabs.length < 1) { return undefined; }
+
   const object: Array<any> = [];
 
   for (const prefab of prefabs) {
@@ -31,6 +33,8 @@ export function serializePrefabsSync(prefabs: Prefab[]) {
 }
 
 export function deserializePrefabsSync(prefabs: any): Prefab[] {
+  if (!prefabs) { return []; }
+
   const object: Prefab[] = [];
 
   for (const prefab of prefabs) {

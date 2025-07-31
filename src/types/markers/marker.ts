@@ -37,6 +37,8 @@ export interface Marker {
 }
 
 export function serializeMarkersSync(markers: Marker[]) {
+  if (markers.length < 1) { return undefined; }
+
   const object: Array<any> = [];
 
   for (const marker of markers) {
@@ -53,6 +55,8 @@ export function serializeMarkersSync(markers: Marker[]) {
 }
 
 export function deserializeMarkersSync(markers: Array<any>): Marker[] {
+  if (!markers) { return []; }
+
   const object: Marker[] = [];
 
   for(const marker of markers) {

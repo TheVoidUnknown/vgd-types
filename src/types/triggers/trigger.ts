@@ -13,6 +13,8 @@ export interface Trigger {
 }
 
 export function serializeTriggersSync(triggers: Trigger[]) {
+  if (triggers.length < 1) { return undefined; }
+  
   const object: Array<any> = [];
 
   for (const trigger of triggers) {
