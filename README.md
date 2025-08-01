@@ -24,12 +24,21 @@ main();
 
 ## Example
 ```ts
+import * as fs from 'fs';
+
 // Import the stuff we'll need
-import { ObjectType, Keyframe, EaseType } from '../src/types/common';
+import { 
+  ObjectType, 
+  Keyframe, 
+  EaseType, 
+  getShape, 
+  RandomType, 
+  MoveKeyframe 
+} from 'vgd-types';
 
 // Let's assume you already have a level
 // You can read one from your drive with fs.readFileSync and then parse it
-const raw: string = fs.readFileSync('./levels/ISOMETRY/level.vgd').toString();
+const raw: string = fs.readFileSync('./level.vgd').toString();
 
 // We need to parse the raw level data as JSON, and then convert it to a readable format
 let level = deserializeLevelDataSync( // We *DE*serialize because it's being converted from a file (serial data) into usable data
@@ -37,24 +46,20 @@ let level = deserializeLevelDataSync( // We *DE*serialize because it's being con
 ); 
 
 // First we'll make our keyframes
-let movement: Keyframe[] = [
-  { eventData: [0, 0]}, // Default keyframe
+let movement: MoveKeyframe[] = [
+  { x: 0, y: 0 }, // Default keyframe
 
   { 
     timestamp: 0.1, // At 1.1 seconds (relative to spawn time)
-    eventData: [ // Move to x = -100, y = 0
-      -100,
-      0
-    ],
+    x: -100, // Go to -100, 0
+    y: 0,
     easing: EaseType.InOutSine // Using InOutSine
   },
 
   { 
     timestamp: 10, // At 11 seconds (relative to spawn time)
-    eventData: [ // Move to x = 100, y = 0
-      100,
-      0
-    ],
+    x: 100, // Go to 100, 0
+    y: 0,
     easing: EaseType.Linear // Using Linear
   }
 ]
@@ -68,14 +73,31 @@ let newObject: LevelObject = {
   spawnTime: 1,
   origin: { x: 0, y: 0 },
 
-  shape: "SquareFilled",
+  shape: "CircleFilled",
   objectType: ObjectType.Hit,
 
   keyframes: {
     move: movement , // Our keyframes from earlier
-    scale: [{ eventData: [0, 0]}], // Every keyframe type must have a default keyframe
-    rotation: [{ eventData: [0, 0]}],
-    color: [{ eventData: [0, 0]}]
+
+    // Examples of the values keyframes can have
+    scale: [{
+      x: 1,
+      y: 1,
+      randomX: 5,
+      randomY: 5,
+      randomInterval: 0,
+      random: RandomType.Linear
+    }],
+
+    rotation: [{ 
+      rotation: 45,
+      useAbsoluteRotation: true
+    }],
+
+    color: [{ 
+      color: 6,
+      opacity: 80
+    }]
   }
 }
 
@@ -83,8 +105,8 @@ let objects = level.objects; // This is where the timeline objects live
 objects.push(newObject); // Add our new object
 
 // And down here you would write it back to your drive to use in PA
-// const newLevel = serializeLevelDataSync(level);
-// fs.writeFileSync('./level_edited.vgd', JSON.stringify(newLevel));
+//const newLevel = serializeLevelDataSync(level);
+//fs.writeFileSync('./tests/level_edited.vgd', JSON.stringify(newLevel));
 ```
 
 ### TODO

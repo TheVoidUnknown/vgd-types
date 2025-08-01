@@ -11,6 +11,18 @@ import {
   getShapeName,
   ShapeName,
   getShape,
+  MoveKeyframe,
+  ScaleKeyframe,
+  RotationKeyframe,
+  ColorKeyframe,
+  serializeMoveKeyframes,
+  serializeScaleKeyframes,
+  serializeRotationKeyframes,
+  serializeColorKeyframes,
+  deserializeMoveKeyframes,
+  deserializeScaleKeyframes,
+  deserializeRotationKeyframes,
+  deserializeColorKeyframes,
 } from "../common"
 
 export interface LevelObject {
@@ -38,10 +50,10 @@ export interface LevelObject {
   customShape?: CustomShapeData;
 
   keyframes: {
-    move: Keyframe[];
-    scale: Keyframe[];
-    rotation: Keyframe[];
-    color: Keyframe[];
+    move: MoveKeyframe[];
+    scale: ScaleKeyframe[];
+    rotation: RotationKeyframe[];
+    color: ColorKeyframe[];
   }
 
   inherit?: {
@@ -116,10 +128,10 @@ export function serializeLevelObjectsSync(levelObjects: LevelObject[]) {
       ),
 
       e: [
-        {k: serializeKeyframes(levelObject.keyframes.move)},
-        {k: serializeKeyframes(levelObject.keyframes.scale) },
-        {k: serializeKeyframes(levelObject.keyframes.rotation)},
-        {k: serializeKeyframes(levelObject.keyframes.color)}
+        {k: serializeMoveKeyframes(levelObject.keyframes.move)},
+        {k: serializeScaleKeyframes(levelObject.keyframes.scale) },
+        {k: serializeRotationKeyframes(levelObject.keyframes.rotation)},
+        {k: serializeColorKeyframes(levelObject.keyframes.color)}
       ],
 
       ...((
@@ -222,10 +234,10 @@ export function deserializeLevelObjectsSync(levelObjects: Array<any>): LevelObje
       },
 
       keyframes: {
-        move: deserializeKeyframes(levelObject.e[0].k),
-        scale: deserializeKeyframes(levelObject.e[1].k),
-        rotation: deserializeKeyframes(levelObject.e[2].k),
-        color: deserializeKeyframes(levelObject.e[3].k)
+        move: deserializeMoveKeyframes(levelObject.e[0].k),
+        scale: deserializeScaleKeyframes(levelObject.e[1].k),
+        rotation: deserializeRotationKeyframes(levelObject.e[2].k),
+        color: deserializeColorKeyframes(levelObject.e[3].k)
       },
 
       inherit: {

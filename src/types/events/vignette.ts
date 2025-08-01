@@ -1,11 +1,13 @@
 import { ColorIndex } from "../common";
-import { Keyframe } from "../common/keyframe";
+import { filterUndefined, Keyframe } from "../common/keyframe";
 
 export type VignetteKeyframe = Omit<Keyframe, 'eventData' | 'random'> & {
   intensity: number;
   smoothness: number;
   isRound: boolean;
-  // 0.0 ?
+  
+  unknownIndex3: any;
+
   centerX: number;
   centerY: number;
   color: ColorIndex;
@@ -15,23 +17,23 @@ export function serializeVignetteKeyframesSync(vignetteKeyframes: VignetteKeyfra
   const object = [];
 
   for (const keyframe of vignetteKeyframes) {
-    const evValues = [
+    const ev = filterUndefined([
       keyframe.intensity,
       keyframe.smoothness,
       keyframe.isRound,
-      0, // seems to be left over?
+      
+      keyframe.unknownIndex3,
+
       keyframe.centerX,
       keyframe.centerY,
       keyframe.color
-    ];
-
-    const filteredEv = evValues.filter(v => v !== undefined);
+    ]);
 
     object.push({
       ...(keyframe.timestamp !== undefined && { t: keyframe.timestamp }),
       ...(keyframe.easing !== undefined && { ct: keyframe.easing }),
 
-      ...(filteredEv.length > 0 && { ev: filteredEv }),
+      ...(ev.length > 0 && { ev }),
 
       ...(keyframe.eventRandom !== undefined && { er: keyframe.eventRandom })
     });
@@ -54,6 +56,7 @@ export function deserializeVignetteKeyframesSync(vignetteKeyframes: any): Vignet
       centerY: keyframe.ev[5],
       color: keyframe.ev[6],
 
+      unknownIndex3: keyframe.ev && keyframe.ev[3],
       eventRandom: keyframe.er
     })
   }

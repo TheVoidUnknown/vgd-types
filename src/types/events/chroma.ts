@@ -1,18 +1,25 @@
-import { Keyframe } from "../common/keyframe";
+import { filterUndefined, Keyframe } from "../common/keyframe";
 
 export type ChromaKeyframe = Omit<Keyframe, 'eventData' | 'random'> & {
   intensity: number;
-  // 0.0 ?
+  
+  unknownIndex1?: any;
 };
 
 export function serializeChromaKeyframesSync(chromaKeyframes: ChromaKeyframe[]) {
   const object = [];
 
   for (const keyframe of chromaKeyframes) {
+    const ev = filterUndefined([
+      keyframe.intensity,
+      keyframe.unknownIndex1
+    ]);
+
     object.push({
       ...(keyframe.timestamp !== undefined && { t: keyframe.timestamp }),
       ...(keyframe.easing !== undefined && { ct: keyframe.easing }),
-      ...(keyframe.intensity !== undefined && { ev: [keyframe.intensity, 0] }),
+
+      ...(ev !== undefined && { ev }),
 
       ...(keyframe.eventRandom !== undefined && { er: keyframe.eventRandom })
     })
@@ -30,6 +37,7 @@ export function deserializeChromaKeyframesSync(chromaKeyframes: any): ChromaKeyf
       easing: keyframe.ct,
       intensity: keyframe.ev[0],
 
+      unknownIndex1: keyframe.ev && keyframe.ev[1],
       eventRandom: keyframe.er
     })
   }

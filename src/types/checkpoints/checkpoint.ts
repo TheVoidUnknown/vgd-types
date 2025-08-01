@@ -40,7 +40,7 @@ export function serializeCheckpointsSync(checkpoints: Checkpoint[]) {
 
   for (const checkpoint of checkpoints) {
     object.push({
-      ID: checkpoint.id,
+      ...(checkpoint.id !== undefined && { ID: checkpoint.id }),
       ...(checkpoint.name !== undefined && { n: checkpoint.name }),
       ...(checkpoint.placement !== undefined && { p: checkpoint.placement }),
       ...(checkpoint.timestamp !== undefined && { t: checkpoint.timestamp })

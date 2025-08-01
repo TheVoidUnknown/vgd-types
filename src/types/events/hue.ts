@@ -1,28 +1,27 @@
-import { Keyframe } from "../common/keyframe";
+import { filterUndefined, Keyframe } from "../common/keyframe";
 
 export type HueKeyframe = Omit<Keyframe, 'eventData' | 'random'> & {
   hue: number;
-  // 0.0 ?
-  // 0.0 ?
+  
+  unknownIndex1?: any;
+  unknownIndex2?: any;
 };
 
 export function serializeHueKeyframesSync(hueKeyframes: HueKeyframe[]) {
   const object = [];
 
   for (const keyframe of hueKeyframes) {
-    const evValues = [
+    const ev = filterUndefined([
       keyframe.hue,
-      0,
-      0, // left over from preset of 3 values by default, according to pidge
-    ];
-
-    const filteredEv = evValues.filter(v => v !== undefined);
+      keyframe.unknownIndex1,
+      keyframe.unknownIndex2, // left over from preset of 3 values by default, according to pidge
+    ]);
 
     object.push({
       ...(keyframe.timestamp !== undefined && { t: keyframe.timestamp }),
       ...(keyframe.easing !== undefined && { ct: keyframe.easing }),
 
-      ...(filteredEv.length > 0 && { ev: filteredEv }),
+      ...(ev.length > 0 && { ev }),
 
       ...(keyframe.eventRandom !== undefined && { er: keyframe.eventRandom })
     });
@@ -40,6 +39,8 @@ export function deserializeHueKeyframesSync(hueKeyframes: any): HueKeyframe[] {
       easing: keyframe.ct,
       hue: keyframe.ev && keyframe.ev[0],
 
+      unknownIndex1: keyframe.ev && keyframe.ev[1],
+      unknownIndex2: keyframe.ev && keyframe.ev[2],
       eventRandom: keyframe.er
     })
   }

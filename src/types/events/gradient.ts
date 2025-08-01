@@ -1,5 +1,5 @@
 import { ColorIndex } from "../common";
-import { Keyframe, MixingMode } from "../common/keyframe";
+import { filterUndefined, Keyframe, MixingMode } from "../common/keyframe";
 
 export type GradientKeyframe = Omit<Keyframe, 'eventData' | 'random'> & {
   intensity: number;
@@ -13,21 +13,19 @@ export function serializeGradientKeyframesSync(gradientKeyframes: GradientKeyfra
   const object = [];
 
   for (const keyframe of gradientKeyframes) {
-    const evValues = [
+    const ev = filterUndefined([
       keyframe.intensity,
       keyframe.rotation,
       keyframe.colorB,
       keyframe.colorA,
       keyframe.mixingMode
-    ];
-
-    const filteredEv = evValues.filter(v => v !== undefined);
+    ]);
 
     object.push({
       ...(keyframe.timestamp !== undefined && { t: keyframe.timestamp }),
       ...(keyframe.easing !== undefined && { ct: keyframe.easing }),
 
-      ...(filteredEv.length > 0 && { ev: filteredEv }),
+      ...(ev.length > 0 && { ev }),
 
       ...(keyframe.eventRandom !== undefined && { er: keyframe.eventRandom })
     });

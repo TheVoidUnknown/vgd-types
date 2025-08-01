@@ -1,8 +1,10 @@
-import { Keyframe } from "../common/keyframe";
+import { filterUndefined, Keyframe } from "../common/keyframe";
 
 export type GrainKeyframe = Omit<Keyframe, 'eventData' | 'random'> & {
   intensity: number;
-  // 0.0 ?
+  
+  unknownIndex1?: any
+
   grainSize: number;
   mix: number;
 };
@@ -11,20 +13,20 @@ export function serializeGrainKeyframesSync(grainKeyframes: GrainKeyframe[]) {
   const object = [];
 
   for (const keyframe of grainKeyframes) {
-    const evValues = [
+    const ev = filterUndefined([
       keyframe.intensity,
-      0, // presumably left over from the color option
+
+      keyframe.unknownIndex1,
+
       keyframe.grainSize,
       keyframe.mix
-    ];
-
-    const filteredEv = evValues.filter(v => v !== undefined);
+    ]);
 
     object.push({
       ...(keyframe.timestamp !== undefined && { t: keyframe.timestamp }),
       ...(keyframe.easing !== undefined && { ct: keyframe.easing }),
 
-      ...(filteredEv.length > 0 && { ev: filteredEv }),
+      ...(ev.length > 0 && { ev }),
 
       ...(keyframe.eventRandom !== undefined && { er: keyframe.eventRandom })
     });
@@ -44,6 +46,7 @@ export function deserializeGrainKeyframesSync(grainKeyframes: any): GrainKeyfram
       grainSize: keyframe.ev[2],
       mix: keyframe.ev[3],
 
+      unknownIndex1: keyframe.ev && keyframe.ev[1],
       eventRandom: keyframe.er
     })
   }

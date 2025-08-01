@@ -1,4 +1,4 @@
-import { Keyframe } from "../common/keyframe";
+import { filterUndefined, Keyframe } from "../common/keyframe";
 
 export type LensKeyframe = Omit<Keyframe, 'eventData' | 'random'> & {
   intensity: number;
@@ -10,19 +10,17 @@ export function serializeLensKeyframesSync(lensKeyframes: LensKeyframe[]) {
   const object = [];
 
   for (const keyframe of lensKeyframes) {
-    const evValues = [
+    const ev = filterUndefined([
       keyframe.intensity,
       keyframe.centerX,
       keyframe.centerY
-    ];
-
-    const filteredEv = evValues.filter(v => v !== undefined);
+    ]);
 
     object.push({
       ...(keyframe.timestamp !== undefined && { t: keyframe.timestamp }),
       ...(keyframe.easing !== undefined && { ct: keyframe.easing }),
 
-      ...(filteredEv.length > 0 && { ev: filteredEv }),
+      ...(ev.length > 0 && { ev }),
 
       ...(keyframe.eventRandom !== undefined && { er: keyframe.eventRandom })
     });

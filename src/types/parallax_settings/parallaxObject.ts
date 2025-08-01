@@ -49,7 +49,7 @@ export function serializeParallaxObjectsSync(parallaxObjects: ParallaxObject[]) 
   for (const parallaxObject of parallaxObjects) {
     object.push({
       id: parallaxObject.id,
-      c: parallaxObject.color,
+      ...(parallaxObject.color !== undefined && { c: parallaxObject.color }),
 
       s: {
         ...(parallaxObject.shapeData.shapeType !== undefined && { s: getShape(parallaxObject.shapeData.shape).shapeType || parallaxObject.shapeData.shapeType }),

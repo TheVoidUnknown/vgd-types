@@ -5,7 +5,7 @@ import { GridSettings, serializeGridSettingsSync, deserializeGridSettingsSync } 
 import { PreviewSettings, serializePreviewSettingsSync, deserializepreviewSettingsSync } from "./preview";
 
 export interface EditorSettings {
-  autosaveSettings: AutosaveSettings;
+  autosaveSettings?: AutosaveSettings;
   bpmSettings: BpmSettings;
   generalSettings: GeneralSettings;
   gridSettings: GridSettings;

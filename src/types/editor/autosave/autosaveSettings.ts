@@ -21,10 +21,12 @@ export function serializeAutosaveSettingsSync(autosaveSettings: AutosaveSettings
   return object;
 }
 
-export function deserializeAutosaveSettingsSync(autosaveSettings: any): AutosaveSettings {
+export function deserializeAutosaveSettingsSync(autosaveSettings: any): AutosaveSettings | undefined {
+  if (!autosaveSettings) { return undefined; }
+
   const object: AutosaveSettings = {
-    maxSaves: autosaveSettings.as_max,
-    saveInterval: autosaveSettings.as_interval
+    maxSaves: autosaveSettings && autosaveSettings.as_max,
+    saveInterval: autosaveSettings && autosaveSettings.as_interval
   };
 
   return object;
